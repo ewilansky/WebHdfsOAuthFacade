@@ -30,7 +30,7 @@ namespace ApiProj
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(o =>
                 {
-                    o.Authority = "https://mac.local:44304";
+                    o.Authority = "https://mac.my:44304";
                     o.RequireHttpsMetadata = false;
                     o.ApiName = "api1";
                 });

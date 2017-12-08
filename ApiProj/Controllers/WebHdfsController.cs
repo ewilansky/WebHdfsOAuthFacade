@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -9,6 +10,7 @@ namespace ApiProj.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
+    [Authorize]
     public class WebHdfsController : Controller
     {
         private readonly Uri webHdfsUriBase =
@@ -31,14 +33,13 @@ namespace ApiProj.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var status = await response.Content.ReadAsAsync<Rootobject>();
-                return Ok(new JsonResult(from f in status.FileStatuses.FileStatus select new {
+                return new JsonResult(from f in status.FileStatuses.FileStatus select new {
                     f.Type,
                     f.PathSuffix,
-                    f.AccessTime,
-                    f.FileId,
+                    f.Length,
                     f.Owner,
                     f.Group
-                }));
+                });
             }
             else
             {
